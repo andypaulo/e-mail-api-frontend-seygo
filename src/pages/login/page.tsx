@@ -8,7 +8,7 @@ export default function LoginPage () {
             <form className="bg-[#FFFFFF] shadow-md rounded-lg p-6 w-[370px] h-[363px] text-center">
                 <div className="flex items-center justify-center gap-2 mt-6">
                     <img src={logo} className="flex w-12.5 h-12.5 " alt="logo"></img>
-                    <h2 className='text-2xl font-bold text[#3D3D3D cursor-default ]'>Seygo</h2>
+                    <h2 className='text-2xl font-bold text-[#3D3D3D] cursor-default ]'>Seygo</h2>
                 </div>
                 <p className='text-[#929292] text-[13px] mt-6'>Faça login para prosseguir com o acesso</p>
                 <div className='text-left mt-4'>
