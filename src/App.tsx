@@ -15,7 +15,7 @@ function App() {
         <Route path="/rotina" element={<RotinaPage />} />
         <Route path="/template" element={<TemplatePage />} />
         <Route path="/login" element={<LoginPage /> }/>
-        <Route path="/blank_modal" element={<ModalBlank />} />
+        <Route path="/blank_modal" element={<ModalBlank width="428" height="504" layoutButton={2} modalTitle="teste de titulo"   />} />
       </Routes>
     </Router>
     
