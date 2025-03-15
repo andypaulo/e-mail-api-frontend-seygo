@@ -1,7 +1,9 @@
 import { MagnifyingGlass, Plus } from "@phosphor-icons/react";
 import TableComp from "../../components/shared/TableComp";
+import CustomSelect from "../../components/shared/CustomSelect";
 
 export default function RotinaPage() {
+
   return (
     <div className="bg-[#EDF1F5] min-h-screen ">
       <h2 className="text-xl py-6 font-semibold pl-4">Minhas Rotinas</h2>
@@ -12,10 +14,7 @@ export default function RotinaPage() {
           <input type="text" className="border border-[#D9D9D9] p-1.5 rounded-md focus:outline-none focus:ring-1 focus:ring-[#a8a3a3] w-full" />
         </div>
 
-        <div className="flex flex-col w-full md:w-auto">
-          <label className="text-[#929292] text-[11px]">Nome Template</label>
-          <input className="border border-[#D9D9D9] p-1.5 rounded-md focus:outline-none focus:ring-1 focus:ring-[#a8a3a3] w-full" />
-        </div>
+        <CustomSelect endpoint="/templates/list/dropdown" label="Nome Template" className="flex flex-col w-full md:w-auto" />
 
         <div className="flex flex-col w-full md:w-auto">
           <label className="text-[#929292] text-[11px]">Tipo Template</label>
