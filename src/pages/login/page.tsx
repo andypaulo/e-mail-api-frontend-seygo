@@ -1,10 +1,10 @@
-import logo from './logo.webp';
+import logo from '../../assets/public/logo.webp';
 
 export default function LoginPage () {
 
     return(
 
-        <div className="font-[Poppins] flex min-h-screen items-center justify-center bg-[#EDF1F5]">
+        <div className="flex min-h-screen items-center justify-center bg-[#EDF1F5]">
             <form className="bg-[#FFFFFF] shadow-md rounded-lg p-6 w-[370px] h-[363px] text-center">
                 <div className="flex items-center justify-center gap-2 mt-6">
                     <img src={logo} className="flex w-12.5 h-12.5 " alt="logo"></img>
