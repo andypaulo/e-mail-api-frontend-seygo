@@ -1,6 +1,8 @@
 import {MagnifyingGlass, Plus } from "@phosphor-icons/react";
+import { useState } from "react";
 
 export default function TemplatePage() {
+  const [isOpen, setIsOpen] = useState(false);
 
   return (
     
@@ -21,9 +23,12 @@ export default function TemplatePage() {
 
 
  <button className="bg-[#ED6F2A] text-[#FFFFFF] px-4 py-1.5 rounded-sm flex items-center gap-2 cursor-pointer hover:bg-[#ed6e2aee] active:bg-[#BA6F47] transition delay-60 duration-40 ease-in-out"><MagnifyingGlass size={20} weight="bold" /> Pesquisar</button>
-    <button className="bg-[#46B7BA] text-[#FFFFFF] px-4 py-1.5 rounded-sm flex items-center gap-0.5 cursor-pointer hover:bg-[#46b6baf3] active:bg-[#1096DE] transition delay-60 duration-40 ease-in-out"><Plus size={20} weight="bold"/>Novo Template</button>
+    <button onClick={() => setIsOpen(true)} className="bg-[#46B7BA] text-[#FFFFFF] px-4 py-1.5 rounded-sm flex items-center gap-0.5 cursor-pointer hover:bg-[#46b6baf3] active:bg-[#1096DE] transition delay-60 duration-40 ease-in-out"><Plus size={20} weight="bold"/>Novo Template</button>
     </div>
+    {isOpen && (
+      <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50"/>
+    )}
   </div>
-  )
+  );
 }
 
