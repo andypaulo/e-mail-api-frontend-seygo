@@ -12,7 +12,7 @@ const CustomSelect = ({ endpoint, label, className }: IProps) => {
   
   return (
     <div className={className}>
-      {label && <label className="text-[#929292] text-[11px]">{label}</label>}
+      {label && <label className="text-[#929292] text-[13px]">{label}</label>}
       <select className="border border-[#D9D9D9] p-1.5 rounded-md focus:outline-none focus:ring-1 focus:ring-[#a8a3a3] w-full">
         {data.map((item: IDropdownResponse) => (
           <option key={item.id} value={item.id}>

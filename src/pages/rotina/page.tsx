@@ -1,30 +1,72 @@
 import { MagnifyingGlass, Plus } from "@phosphor-icons/react";
-import TableComp from "../../components/shared/TableComp";
 import CustomSelect from "../../components/shared/CustomSelect";
+import TableCustom from "../../components/shared/TableCustom";
+
+const columns = [
+  { header: "ID", body: "id" },
+  { header: "Nome da rotina", body: "routine_name" },
+  { header: "Nome do template", body: "template_name" },
+  { header: "Tipo do template", body: "template_type" },
+  { header: "Status", body: "status" },
+  { header: "Ações", body: "acoes" },
+];
+
+const renderCell = (item: any, column: string | number | symbol) => {
+  if (column === "acoes") {
+    return (
+      <div>
+        oi{" "}
+        <button color="danger" onClick={() => alert(`Deletando ${item.id}`)}>
+          Excluir
+        </button>
+      </div>
+    );
+  }
+
+  if (column === "status") {
+    console.log(item);
+    if (item.status) {
+      return (
+        <div className="text-white bg-green-500 w-12 flex items-center justify-center rounded">
+          Ativo
+        </div>
+      );
+    }
+  }
+  return item[column];
+};
 
 export default function RotinaPage() {
-
   return (
     <div className="bg-[#EDF1F5] min-h-screen ">
       <h2 className="text-xl py-6 font-semibold pl-4">Minhas Rotinas</h2>
 
       <div className="flex flex-wrap md:flex-nowrap items-end gap-4 border border-[#D1D5DB] py-6 px-4 w-full">
         <div className="flex flex-col w-full md:w-auto">
-          <label className="text-[#929292] text-[11px]">Nome Rotina</label>
-          <input type="text" className="border border-[#D9D9D9] p-1.5 rounded-md focus:outline-none focus:ring-1 focus:ring-[#a8a3a3] w-full" />
+          <label className="text-[#929292] text-[13px]">Nome Rotina</label>
+          <input
+            type="text"
+            className="border border-[#D9D9D9] p-1.5 rounded-md focus:outline-none focus:ring-1 focus:ring-[#a8a3a3] w-full"
+          />
         </div>
 
-        <CustomSelect endpoint="/templates/list/dropdown" label="Nome Template" className="flex flex-col w-full md:w-auto" />
+        <CustomSelect
+          endpoint="/routines/list/dropdown"
+          label="Nome Template"
+          className="flex flex-col w-full md:w-auto"
+        />
 
         <div className="flex flex-col w-full md:w-auto">
-          <label className="text-[#929292] text-[11px]">Tipo Template</label>
+          <label className="text-[#929292] text-[13px]">Tipo Template</label>
           <input className="border border-[#D9D9D9] p-1.5 rounded-md focus:outline-none focus:ring-1 focus:ring-[#a8a3a3] w-full" />
         </div>
 
         <div className="flex flex-col w-full md:w-auto">
-          <label className="text-[#929292] text-[11px]">Status</label>
+          <label className="text-[#929292] text-[13px]">Status</label>
           <select className="border border-[#D9D9D9] p-2 rounded-md text-[#929292] text-[11px] focus:outline-none focus:ring-1 focus:ring-[#a8a3a3] w-full">
-            <option value="#" disabled hidden>Selecione</option>
+            <option value="#" disabled hidden>
+              Selecione
+            </option>
             <option value="Ativo">Ativo</option>
             <option value="Inativo">Inativo</option>
           </select>
@@ -40,7 +82,14 @@ export default function RotinaPage() {
         </div>
       </div>
 
-      <TableComp />
+      <div className="flex">
+        <TableCustom
+          renderCell={renderCell}
+          columns={columns}
+          fetchEndpoint="http://localhost:3000/api/routines"
+          numberRolls={10}
+        />
+      </div>
     </div>
   );
 }
