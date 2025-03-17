@@ -15,8 +15,7 @@ const renderCell = (item: any, column: string | number | symbol) => {
   if (column === "acoes") {
     return (
       <div>
-        oi{" "}
-        <button color="danger" onClick={() => alert(`Deletando ${item.id}`)}>
+        <button className="bg-red-500 cursor-pointer rounded text-white px-2"  onClick={() => alert(`Deletando ${item.id}`)}>
           Excluir
         </button>
       </div>
@@ -24,7 +23,6 @@ const renderCell = (item: any, column: string | number | symbol) => {
   }
 
   if (column === "status") {
-    console.log(item);
     if (item.status) {
       return (
         <div className="text-white bg-green-500 w-12 flex items-center justify-center rounded">
@@ -32,6 +30,11 @@ const renderCell = (item: any, column: string | number | symbol) => {
         </div>
       );
     }
+    return (
+        <div className="text-white bg-red-500 w-16 flex items-center justify-center rounded">
+          Inativo
+        </div>
+    )
   }
   return item[column];
 };
@@ -87,7 +90,7 @@ export default function RotinaPage() {
           renderCell={renderCell}
           columns={columns}
           fetchEndpoint="http://localhost:3000/api/routines"
-          numberRolls={10}
+          numberRolls={40}
         />
       </div>
     </div>
