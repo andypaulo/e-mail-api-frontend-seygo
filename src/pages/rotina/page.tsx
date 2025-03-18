@@ -41,7 +41,7 @@ const renderCell = (item: any, column: string | number | symbol) => {
 
 export default function RotinaPage() {
   return (
-    <div className="bg-[#EDF1F5] min-h-screen ">
+    <div className="bg-[#EDF1F5] min-h-screen w-full">
       <h2 className="text-xl py-6 font-semibold pl-4">Minhas Rotinas</h2>
 
       <div className="flex flex-wrap md:flex-nowrap items-end gap-4 border border-[#D1D5DB] py-6 px-4 w-full">
