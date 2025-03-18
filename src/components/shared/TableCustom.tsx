@@ -31,7 +31,8 @@ const TableCustom: React.FC<TableCustomProps> = ({
   useEffect(() => {
     fetchTableData(fetchEndpoint)
       .then((result: TableData) => {
-        setData(result.items);
+        console.log(result)
+        setData(result);
       })
       .catch((error) => console.error("Erro ao buscar os dados:", error));
   }, [fetchEndpoint]);
