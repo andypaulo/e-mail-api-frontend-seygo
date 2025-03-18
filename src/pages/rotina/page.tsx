@@ -1,6 +1,8 @@
 import { MagnifyingGlass, Plus } from "@phosphor-icons/react";
 import CustomSelect from "../../components/shared/CustomSelect";
 import TableCustom from "../../components/shared/TableCustom";
+import { useRef } from "react";
+import ModalBlank, { ModalHandles } from "../../components/shared/Modal.tsx";
 
 const columns = [
   { header: "ID", body: "id" },
@@ -40,6 +42,9 @@ const renderCell = (item: any, column: string | number | symbol) => {
 };
 
 export default function RotinaPage() {
+  const visualizarModalRef = useRef<ModalHandles>(null);
+  const editarModalRef = useRef<ModalHandles>(null);
+
   return (
     <div className="bg-[#EDF1F5] min-h-screen w-full">
       <h2 className="text-xl py-6 font-semibold pl-4">Minhas Rotinas</h2>
@@ -92,6 +97,52 @@ export default function RotinaPage() {
           fetchEndpoint="http://localhost:3000/api/routines"
           numberRolls={40}
         />
+      </div>
+
+      <div>
+        <button onClick={() => visualizarModalRef.current?.openModal()} className="border-1 rounded-[100%]">Visualizar</button>
+          <ModalBlank 
+          ref={visualizarModalRef}
+          width="428"
+          height="534"
+          layoutButton={2}
+          modalTitle="Visualizar Rotina"
+          modalElement={<div>
+            <p>ID: id</p>
+            <p>Nome da Rotina: routine_name</p>
+            <p>Nome do Template: template_name</p>
+            <p>Tipo do Template: HTML, Text</p>
+            <p>Status: Ativo/Inativo</p>
+            </div>} />
+        <button onClick={() => editarModalRef.current?.openModal()} className="border-1 rounded-[100%] m-5">Editar</button>
+        <ModalBlank 
+          ref={editarModalRef}
+          width="428"
+          height="534"
+          layoutButton={2}
+          modalTitle="Editar Rotina [Nome da Rotina]"
+          modalElement={<form>
+            <div className="">
+              <input type="text" className="border border-[#D9D9D9] p-1.5 rounded-md focus:outline-none focus:ring-1 focus:ring-[#a8a3a3] w-full" placeholder="Texto/Nome Rotina"></input>
+              <select className="text-[#929292] text-[13px]">Nomes e Tipo Template
+              <option>HTML</option>
+              <option>Text</option>
+              </select>
+            </div>
+            <div>
+              <p>Horários</p>
+            </div>
+            <div>
+              <div className="flex items-center ">
+                <p className="text-sm font-medium">Status</p>
+                <label className="relative inline-flex items-center cursor-pointer">
+                <input type="checkbox" className="sr-only peer" />
+                <div className="w-11 h-6 bg-[#D9D9D9] rounded-full peer-checked:after:translate-x-5 peer-checked:bg-[#93ff85] after:absolute after:top-0.5 after:left-[2px] after:bg-[#ffffff] after:border after:rounded-full after:h-5 after:w-5 after:transition-all"></div>
+                </label>
+              </div>
+            </div>
+            </form>} />
+
       </div>
     </div>
   );

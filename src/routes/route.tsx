@@ -6,6 +6,7 @@ import LoginPage from "../pages/login/page";
 import ConnectionPage from "../pages/connection/page";
 import Layout from "../components/layout/layout";
 
+
 const AppRoutes = () => {
   return (
     <Routes>
