@@ -6,6 +6,7 @@ export interface TableData {
 export const fetchTableData = async (endpoint: string): Promise<TableData> => {
   const response = await fetch(endpoint);
   const json = await response.json();
+  console.log(json.data);
   return json.data;
 };
 
