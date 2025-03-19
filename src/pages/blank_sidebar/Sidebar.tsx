@@ -1,6 +1,5 @@
 import { useState } from "react";
-import { motion } from "framer-motion";
-import { List, X, Warehouse, Storefront, User, Ranking, PiggyBank, Gauge, CurrencyCircleDollar, Building } from "@phosphor-icons/react";
+import { List,Warehouse, Storefront, User, Ranking, PiggyBank, Gauge, CurrencyCircleDollar, Building } from "@phosphor-icons/react";
 import logo from "../.././assets/public/logo.webp"
 
 export default function Sidebar() {
