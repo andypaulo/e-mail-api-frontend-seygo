@@ -1,8 +1,9 @@
 import { MagnifyingGlass, Plus } from "@phosphor-icons/react";
 import CustomSelect from "../../components/shared/CustomSelect";
 import TableCustom from "../../components/shared/TableCustom";
-import { useRef } from "react";
+import {useRef } from "react";
 import ModalBlank, { ModalHandles } from "../../components/shared/Modal.tsx";
+
 
 const columns = [
   { header: "ID", body: "id" },
@@ -16,11 +17,20 @@ const columns = [
 const renderCell = (item: any, column: string | number | symbol) => {
   if (column === "acoes") {
     return (
+
+      <div>
+        <div>
+        <button className="bg-green-500 cursor-pointer rounded text-white px-2"   onClick={() => alert(`${item.id}`)}>
+          Visualizar
+        </button>
+        </div>
       <div>
         <button className="bg-red-500 cursor-pointer rounded text-white px-2"  onClick={() => alert(`Deletando ${item.id}`)}>
           Excluir
         </button>
       </div>
+      </div>
+
     );
   }
 
@@ -40,6 +50,7 @@ const renderCell = (item: any, column: string | number | symbol) => {
   }
   return item[column];
 };
+
 
 export default function RotinaPage() {
   const visualizarModalRef = useRef<ModalHandles>(null);
@@ -101,28 +112,27 @@ export default function RotinaPage() {
 
       <div>
         <button onClick={() => visualizarModalRef.current?.openModal()} className="border-1 rounded-[100%]">Visualizar</button>
-          <ModalBlank 
-          ref={visualizarModalRef}
-          width="428"
-          height="534"
-          layoutButton={2}
-          modalTitle="Visualizar Rotina"
-          modalElement={<div>
-            <p>ID: id</p>
-            <p>Nome da Rotina: routine_name</p>
-            <p>Nome do Template: template_name</p>
-            <p>Tipo do Template: HTML, Text</p>
-            <p>Status: Ativo/Inativo</p>
-            </div>
-            } 
-          />
+        <ModalBlank
+        ref={visualizarModalRef}
+        width="428"
+        height="534"
+        layoutButton={2}
+        modalTitle="Visualizar Rotina"
+        modalElement={
+          <div></div>
+        }
+      />
+      
+  
+
+
         <button onClick={() => editarModalRef.current?.openModal()} className="border-1 rounded-[100%] m-5">Editar</button>
         <ModalBlank 
           ref={editarModalRef}
           width="428"
           height="554"
           layoutButton={2}
-          modalTitle="Editar Rotina [Nome da Rotina]"
+          modalTitle={`Editar Rotina [nome da rotina]`}
           modalElement={<form className="flex flex-col gap-2">
             <div className="flex flex-col gap-1 mt-[5px]">
               
@@ -138,7 +148,9 @@ export default function RotinaPage() {
               <div className="mt-3">
               <p className="inline font-semibold">Repetição: </p>
               <select className="border-1 border-[#D9D9D9] rounded-[5px] text-[#929292] focus:outline-none focus:ring-1 focus:ring-[#a8a3a3]">
+              <option>diariamente</option>
               <option>semanalmente</option>
+              <option>mensalmente</option>
               </select>
               </div>
               
@@ -190,9 +202,10 @@ export default function RotinaPage() {
             </div>
             </form>
             } 
-        />
+          />
 
       </div>
     </div>
   );
 }
+
