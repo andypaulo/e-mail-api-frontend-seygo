@@ -1,4 +1,10 @@
-import { MagnifyingGlass, Plus, Eye, Pencil, Trash } from "@phosphor-icons/react";
+import {
+  MagnifyingGlass,
+  Plus,
+  Eye,
+  Pencil,
+  Trash,
+} from "@phosphor-icons/react";
 import CustomSelect from "../../components/shared/CustomSelect";
 import TableCustom from "../../components/shared/TableCustom";
 import { useRef } from "react";
@@ -17,23 +23,31 @@ const columns = [
 const renderCell = (item: any, column: string | number | symbol) => {
   if (column === "acoes") {
     return (
-
-      <div className="inline-flex">
-        <div className="">
-        <button className="bg-green-500 cursor-pointer rounded text-white px-2"   onClick={visualizarModalRef.current?.openModal()}>
-          <Eye size={25}/>
-        </button>
-        </div>
-        <div className="">
-        <button className="bg-orange-400 cursor-pointer rounded text-white px-2"   onClick={() => alert(`${item.id}`)}>
-          <Pencil size={25}/>
-        </button>
-        </div>
       <div className="">
-        <button className="bg-red-500 cursor-pointer rounded text-white px-2"  onClick={() => alert(`Deletando ${item.id}`)}>
-          <Trash size={25}/>
-        </button>
-      </div>
+        <div className="">
+          <button
+            className="bg-green-500 cursor-pointer rounded text-white px-2"
+            onClick={() => alert(`${item.id}`)}
+          >
+            <Eye size={25} />
+          </button>
+        </div>
+        <div className="">
+          <button
+            className="bg-orange-400 cursor-pointer rounded text-white px-2"
+            onClick={() => alert(`${item.id}`)}
+          >
+            <Pencil size={25} />
+          </button>
+        </div>
+        <div className="">
+          <button
+            className="bg-red-500 cursor-pointer rounded text-white px-2"
+            onClick={() => alert(`Deletando ${item.id}`)}
+          >
+            <Trash size={25} />
+          </button>
+        </div>
       </div>
     );
   }
@@ -125,7 +139,7 @@ export default function RotinaPage() {
           width="428"
           height="534"
           layoutButton={2}
-          modalTitle="Visualizar Rotina"
+          modalTitle={"ID"}
           modalElement={<div></div>}
         />
 
@@ -141,7 +155,7 @@ export default function RotinaPage() {
           height="554"
           layoutButton={2}
           modalTitle={`Editar Rotina [nome da rotina]`}
-          modalElement={<FormRotina/>}
+          modalElement={<FormRotina />}
         />
       </div>
     </div>
