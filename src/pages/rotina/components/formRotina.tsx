@@ -1,8 +1,8 @@
 import { useState } from "react";
 
 export default function FormRotina() {
-  const [mode, setMode] = useState("")
-  
+  const [mode, setMode] = useState("");
+
   return (
     <form className="flex flex-col gap-2">
       <div className="flex flex-col gap-1 mt-[5px]">
@@ -17,7 +17,7 @@ export default function FormRotina() {
           <option>Text</option>
         </select>
       </div>
-      <div className="mt-2 text-[12px]">
+      <div className="mt-2 text-[13px]">
         <h3 className="font-semibold text-[18px]">Horários</h3>
 
         <div className="mt-3">
@@ -79,6 +79,9 @@ export default function FormRotina() {
           <p className="font-semibold inline">Repete a cada: </p>
           <select className="border-1 border-[#D9D9D9] rounded-[5px] text-[#929292] focus:outline-none focus:ring-1 focus:ring-[#a8a3a3]">
             <option>1</option>
+            <option>2</option>
+            <option>3</option>
+            <option>4</option>
           </select>
           <span>semanas</span>
         </div>
@@ -90,31 +93,44 @@ export default function FormRotina() {
           ></input>
         </div>
         <div className="mt-4">
-          <p className="font-semibold">Termina em: </p>
-          <input
-            type="checkbox"
-            className="h-3 w-3 appearance-none cursor-pointer border border-[#D9D9D9] checked:bg-[#2E2E34] checked:border-[#2E2E34] rounded-[2px]"
-          ></input>
-          <label className="font-medium ">Nunca</label> <br />
-          <input
-            type="checkbox"
-            className="h-3 w-3 appearance-none cursor-pointer border border-[#D9D9D9] checked:bg-[#2E2E34] checked:border-[#2E2E34] rounded-[2px]"
-          ></input>
-          <label className="font-medium">
-            Depois de
-            <select className="border-1 border-[#D9D9D9] rounded-[5px] text-[#929292] focus:outline-none focus:ring-1 focus:ring-[#a8a3a3]">
-              <option>1</option>
-            </select>
-            Ocorrências
-          </label>
+          <div className="flex gap-2">
+            <div className="flex items-center gap-2">
+              <p className="font-semibold">Termina em:</p>
+              <div className="flex flex-col">
+                <div className="flex items-center">
+                  <input
+                    type="checkbox"
+                    className="h-3 w-3 appearance-none cursor-pointer border border-[#D9D9D9] checked:bg-[#2E2E34] checked:border-[#2E2E34] rounded-[2px] mr-1"
+                  />
+                  <label className="font-medium">Nunca</label>
+                </div>
+                <div className="flex items-center mt-1">
+                  <input
+                    type="checkbox"
+                    className="h-3 w-3 appearance-none cursor-pointer border border-[#D9D9D9] checked:bg-[#2E2E34] checked:border-[#2E2E34] rounded-[2px] mr-1"
+                  />
+                  <label className="font-medium flex items-center gap-1">
+                    Depois de
+                    <select className="border border-[#D9D9D9] rounded-[5px] text-[#929292] focus:outline-none focus:ring-1 focus:ring-[#a8a3a3]">
+                      <option>1</option>
+                      <option>2</option>
+                      <option>3</option>
+                      <option>4</option>
+                    </select>
+                    Ocorrências
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
       <div>
         <div className="flex items-center mt-4">
-          <p className="text-sm font-medium">Status</p>
+          <p className="text-sm font-medium mr-1">Status</p>
           <label className="relative inline-flex items-center cursor-pointer">
             <input type="checkbox" className="sr-only peer" />
-            <div className="w-11 h-6 bg-[#D9D9D9] rounded-full peer-checked:after:translate-x-5 peer-checked:bg-[#93ff85] after:absolute after:top-0.5 after:left-[2px] after:bg-[#ffffff] after:border after:rounded-full after:h-5 after:w-5 after:transition-all"></div>
+            <div className="w-11 h-6 bg-[#D9D9D9] rounded-full peer-checked:after:translate-x-5 peer-checked:bg-green-500 after:absolute after:top-0.5 after:left-[2px] after:bg-[#ffffff] after:border after:rounded-full after:h-5 after:w-5 after:transition-all"></div>
           </label>
         </div>
       </div>
