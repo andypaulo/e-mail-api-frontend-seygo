@@ -1,4 +1,4 @@
-import { MagnifyingGlass, Plus } from "@phosphor-icons/react";
+import { MagnifyingGlass, Plus, Eye, Pencil, Trash } from "@phosphor-icons/react";
 import CustomSelect from "../../components/shared/CustomSelect";
 import TableCustom from "../../components/shared/TableCustom";
 import {useRef } from "react";
@@ -18,15 +18,20 @@ const renderCell = (item: any, column: string | number | symbol) => {
   if (column === "acoes") {
     return (
 
-      <div>
-        <div>
-        <button className="bg-green-500 cursor-pointer rounded text-white px-2"   onClick={() => alert(`${item.id}`)}>
-          Visualizar
+      <div className="inline-flex">
+        <div className="">
+        <button className="bg-green-500 cursor-pointer rounded text-white px-2"   onClick={visualizarModalRef.current?.openModal()}>
+          <Eye size={25}/>
         </button>
         </div>
-      <div>
+        <div className="">
+        <button className="bg-orange-400 cursor-pointer rounded text-white px-2"   onClick={() => alert(`${item.id}`)}>
+          <Pencil size={25}/>
+        </button>
+        </div>
+      <div className="">
         <button className="bg-red-500 cursor-pointer rounded text-white px-2"  onClick={() => alert(`Deletando ${item.id}`)}>
-          Excluir
+          <Trash size={25}/>
         </button>
       </div>
       </div>
