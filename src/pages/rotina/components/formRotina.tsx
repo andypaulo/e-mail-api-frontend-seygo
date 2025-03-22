@@ -1,123 +1,195 @@
-import { useState } from "react";
+import { div, span } from "framer-motion/client";
+import React, { useState } from "react";
 
-export default function FormRotina() {
-  const [mode, setMode] = useState("")
-  
+export default function CronGenerator() {
+  const [repeatType, setRepeatType] = useState("diariamente");
+  const [daysOfWeek, setDaysOfWeek] = useState([]);
+  const [startDate, setStartDate] = useState("");
+  const [endType, setEndType] = useState("nunca");
+  const [occurrences, setOccurrences] = useState(1);
+  const [repeatCondition, setRepeatCondition] = useState(1);
+
+  const handleDayChange = (day) => {
+    setDaysOfWeek((prev) =>
+      prev.includes(day) ? prev.filter((d) => d !== day) : [...prev, day]
+    );
+  };
+
+  const generateCronExpression = () => {
+    let cronMinute = "0";
+    let cronHour = "0";
+    let cronDayOfMonth = "*";
+    let cronMonth = "*";
+    let cronDayOfWeek= "*";
+
+    if (repeatType === "diariamente") {
+      cronDayOfWeek = "*";
+    } else if (repeatType === "semanalmente" || "mensalmente") {
+      cronDayOfWeek = daysOfWeek.length > 0 ? daysOfWeek.join(",") : "*";
+    } else if (repeatType === "mensalmente" && startDate) {
+      cronDayOfMonth = new Date(startDate).getDate();
+    }
+
+    if (repeatCondition >= 1){
+      
+    }
+
+    if (startDate) {
+      const date = new Date(startDate);
+      cronDayOfMonth = date.getDate() +1;
+      cronMonth = date.getMonth() +1;
+    }
+   
+
+    return `${cronMinute} ${cronHour} ${cronDayOfMonth} ${cronMonth} ${cronDayOfWeek}`;
+  };
+
+  console.log(generateCronExpression())
+
   return (
-    <form className="flex flex-col gap-2">
-      <div className="flex flex-col gap-1 mt-[5px]">
-        <input
-          type="text"
-          className="border border-[#D9D9D9] p-1.5 rounded-md focus:outline-none focus:ring-1 text-[15px] focus:ring-[#a8a3a3] w-full"
-          placeholder="Texto/Nome Rotina"
-        ></input>
-        <select className="mt-1 p-1.5 border-1 border-[#D9D9D9] rounded-[5px] text-[#929292] text-[15px] focus:outline-none focus:ring-1 focus:ring-[#a8a3a3]">
-          Nomes e Tipo Template
-          <option>HTML</option>
-          <option>Text</option>
+    <div className="flex-box p-2 ">
+      <div>
+        <h1 className="text-2xl font-semibold mb-4">Horários</h1>
+      </div>
+      
+      <div className="flex items-center w-40">
+        <label className="font-semibold mr-2">Repetição:</label>
+        <select
+          value={repeatType}
+          onChange={(e) => setRepeatType(e.target.value)}
+          className="flex-box items-center  border h-9 rounded p-2 text-sm text-[#929292] border-[#D9D9D9] flex-1"
+        >
+          <option value="diariamente">Diariamente</option>
+          <option value="semanalmente">Semanalmente</option>
+          <option value="mensalmente">Mensalmente</option>
         </select>
       </div>
-      <div className="mt-2 text-[12px]">
-        <h3 className="font-semibold text-[18px]">Horários</h3>
 
-        <div className="mt-3">
-          <p className="inline font-semibold">Repetição: </p>
-          <select className="border-1 border-[#D9D9D9] rounded-[5px] text-[#929292] focus:outline-none focus:ring-1 focus:ring-[#a8a3a3]">
-            <option>diariamente</option>
-            <option>semanalmente</option>
-            <option>mensalmente</option>
-          </select>
+      {repeatType === "semanalmente" && (
+        <div className="mt-4">
+          <label className="flex font-semibold">Repete em:</label>
+          <div className="flex gap-2">
+            {["D", "S", "T", "Q", "Q", "S", "S"].map((label, index) => (
+              <label key={index} className="flex items-center">
+                <input
+                  type="checkbox"
+                  value={index}
+                  onChange={() => handleDayChange(index)}
+                  checked={daysOfWeek.includes(index)}
+                  className="mr-1 h-3 w-3 appearance-none cursor-pointer border border-[#D9D9D9] checked:bg-[#2E2E34] checked:border-[#2E2E34] rounded-[2px]"
+                />
+                {label}
+              </label>
+            ))}
+          </div>
         </div>
+      )}
 
-        <div className="mt-4">
-          <p className="inline  font-semibold ">Repete em: </p>
-          <input
-            type="checkbox"
-            value="Domingo"
-            className="h-3 w-3 appearance-none cursor-pointer border border-[#D9D9D9] checked:bg-[#2E2E34] checked:border-[#2E2E34] rounded-[2px]"
-          ></input>{" "}
-          <label className="text-[#929292">D </label>
-          <input
-            type="checkbox"
-            value="Segunda"
-            className="h-3 w-3 appearance-none cursor-pointer border border-[#D9D9D9] checked:bg-[#2E2E34] checked:border-[#2E2E34] rounded-[2px]"
-          ></input>{" "}
-          <label className="text-[#929292">S </label>
-          <input
-            type="checkbox"
-            value="Terca"
-            className="h-3 w-3 appearance-none cursor-pointer border border-[#D9D9D9] checked:bg-[#2E2E34] checked:border-[#2E2E34] rounded-[2px]"
-          ></input>{" "}
-          <label className="text-[#929292">T </label>
-          <input
-            type="checkbox"
-            value="Quarta"
-            className="h-3 w-3 appearance-none cursor-pointer border border-[#D9D9D9] checked:bg-[#2E2E34] checked:border-[#2E2E34] rounded-[2px]"
-          ></input>{" "}
-          <label className="text-[#929292">Q </label>
-          <input
-            type="checkbox"
-            value="Quinta"
-            className="h-3 w-3 appearance-none cursor-pointer border border-[#D9D9D9] checked:bg-[#2E2E34] checked:border-[#2E2E34] rounded-[2px]"
-          ></input>{" "}
-          <label className="text-[#929292">Q </label>
-          <input
-            type="checkbox"
-            value="Sexta"
-            className="h-3 w-3 appearance-none cursor-pointer border border-[#D9D9D9] checked:bg-[#2E2E34] checked:border-[#2E2E34] rounded-[2px]"
-          ></input>{" "}
-          <label className="text-[#929292">S </label>
-          <input
-            type="checkbox"
-            value="Sabado"
-            className="h-3 w-3 appearance-none cursor-pointer border border-[#D9D9D9] checked:bg-[#2E2E34] checked:border-[#2E2E34] rounded-[2px]"
-          ></input>{" "}
-          <label className="text-[#929292">S </label>
-        </div>
+      
 
-        <div className="mt-4">
-          <p className="font-semibold inline">Repete a cada: </p>
-          <select className="border-1 border-[#D9D9D9] rounded-[5px] text-[#929292] focus:outline-none focus:ring-1 focus:ring-[#a8a3a3]">
-            <option>1</option>
-          </select>
-          <span>semanas</span>
-        </div>
-        <div className="mt-4">
-          <p className="font-semibold inline">Começa em: </p>
+  <div className="mt-4">
+          <label className="flex-box font-semibold mr-2">Começa em:</label>
           <input
             type="date"
-            className="border-1 border-[#D9D9D9] rounded-[5px] text-[#929292] focus:outline-none focus:ring-1 focus:ring-[#a8a3a3]"
-          ></input>
+            value={startDate}
+            onChange={(e) => setStartDate(e.target.value)}
+            className="border rounded border-[#D9D9D9] text-sm text-[#929292] h-9 p-2 "
+          />
         </div>
+        {repeatType === "diariamente" && (
+          <div className="mt-4 ">
+            <label className="font-semibold">Repete a cada: </label>
+            <select
+            value={repeatCondition}
+            className="border rounded p-x-1"
+            onChange={(e) => setRepeatCondition(e.target.value)}
+            >
+            {[...Array(6).keys()].map((num) => (
+                <option key={num + 1} value={num + 1}>{num + 1}</option>
+              ))}
+           </select>
+           <label className="ml-2">
+           {repeatType === "diariamente" &&( <span>dia(s)</span> )}
+              </label>
+
+          </div>
+        )}
+
+        {repeatType === "semanalmente" && (
+          <div className="mt-4 ">
+            <label className="font-semibold">Repete a cada: </label>
+            <select
+            value={repeatCondition}
+            className="border rounded p-x-1"
+            onChange={(e) => setRepeatCondition(e.target.value)}
+            >
+            {[...Array(4).keys()].map((num) => (
+                <option key={num + 1} value={num + 1}>{num + 1}</option>
+              ))}
+           </select>
+           <label className="ml-2">
+           {repeatType === "semanalmente" &&( <span>semana(s)</span> )}
+              </label>
+
+          </div>
+        )}
+
+        
+
+        {repeatType === "mensalmente" && (
+          <div className="mt-4 ">
+            <label className="font-semibold">Repete a cada: </label>
+            <select
+            value={repeatCondition}
+            className="border rounded p-x-1"
+            onChange={(e) => setRepeatCondition(e.target.value)}
+            >
+            {[...Array(12).keys()].map((num) => (
+                <option key={num + 1} value={num + 1}>{num + 1}</option>
+              ))}
+           </select>
+           <label className="ml-2">
+           {repeatType === "mensalmente" &&( <span>mes(ses)</span> )}
+              </label>
+
+          </div>
+        )}
+
+
         <div className="mt-4">
-          <p className="font-semibold">Termina em: </p>
+        <label className="block font-semibold">Termina em:</label>
+        <div className="flex items-center gap-2 ">
           <input
             type="checkbox"
+            checked={endType === "nunca"}
+            onChange={() => setEndType("nunca")}
             className="h-3 w-3 appearance-none cursor-pointer border border-[#D9D9D9] checked:bg-[#2E2E34] checked:border-[#2E2E34] rounded-[2px]"
-          ></input>
-          <label className="font-medium ">Nunca</label> <br />
+          />
+          <label>Nunca</label>
+        </div>
+        <div className="flex items-center gap-2 mt-2">
           <input
             type="checkbox"
+            checked={endType === "depois"}
+            onChange={() => setEndType("depois")}
             className="h-3 w-3 appearance-none cursor-pointer border border-[#D9D9D9] checked:bg-[#2E2E34] checked:border-[#2E2E34] rounded-[2px]"
-          ></input>
-          <label className="font-medium">
-            Depois de
-            <select className="border-1 border-[#D9D9D9] rounded-[5px] text-[#929292] focus:outline-none focus:ring-1 focus:ring-[#a8a3a3]">
-              <option>1</option>
-            </select>
-            Ocorrências
-          </label>
+          />
+          <label>Depois de</label>
+          {endType === "depois" && (
+            <input
+              
+              value={occurrences}
+              onChange={(e) => setOccurrences(e.target.value)}
+              className="border rounded w-10 pl-1"
+              type="number"
+              min={1}
+            >
+            </input>
+          )}
+          {endType === "depois" && <span>Ocorrência(s)</span>}
         </div>
       </div>
-      <div>
-        <div className="flex items-center mt-4">
-          <p className="text-sm font-medium">Status</p>
-          <label className="relative inline-flex items-center cursor-pointer">
-            <input type="checkbox" className="sr-only peer" />
-            <div className="w-11 h-6 bg-[#D9D9D9] rounded-full peer-checked:after:translate-x-5 peer-checked:bg-[#93ff85] after:absolute after:top-0.5 after:left-[2px] after:bg-[#ffffff] after:border after:rounded-full after:h-5 after:w-5 after:transition-all"></div>
-          </label>
-        </div>
-      </div>
-    </form>
+    </div>
   );
+
 }
