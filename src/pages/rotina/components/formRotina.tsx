@@ -85,8 +85,6 @@ export default function CronGenerator() {
         </div>
       )}
 
-      
-
   <div className="mt-4">
           <label className="flex-box font-semibold mr-2">Começa em:</label>
           <input
