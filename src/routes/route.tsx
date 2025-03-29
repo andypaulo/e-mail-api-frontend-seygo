@@ -5,7 +5,7 @@ import TemplatePage from "../pages/template/page";
 import LoginPage from "../pages/login/page";
 import ConnectionPage from "../pages/connection/page";
 import Layout from "../components/layout/layout";
-import Sidebar from "../pages/blank_sidebar/Sidebar";
+
 
 
 const AppRoutes = () => {
@@ -17,7 +17,6 @@ const AppRoutes = () => {
         <Route path="/rotina" element={<RotinaPage />} />
         <Route path="/template" element={<TemplatePage />} />
         <Route path="/connection" element={<ConnectionPage />} />
-        <Route path="/blank_sidebar" element={<Sidebar/>} /> 
         <Route path="/"/>
       </Route>
     </Routes>
