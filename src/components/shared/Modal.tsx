@@ -2,6 +2,7 @@ import { ReactElement, useState, forwardRef, useImperativeHandle } from "react";
 import { X } from "@phosphor-icons/react";
 
 
+
 interface IModal {
   width: string;
   height: string;
