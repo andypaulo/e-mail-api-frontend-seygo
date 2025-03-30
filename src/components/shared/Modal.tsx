@@ -61,15 +61,6 @@ const ModalBlank = forwardRef<ModalHandles, IModal>(
               </div>
 
               <div>{modalElement}</div>
-
-              <div className="flex justify-end space-x-3">
-                <button onClick={closeModal} className={cancelButtonClass}>
-                  Cancelar
-                </button>
-                <button className="w-25 h-10 bg-[#46B7BA] text-white rounded-md cursor-pointer hover:bg-[#107E81] hover:text-[#EDF1F5]  ease-in duration-100 ">
-                  Salvar
-                </button>
-              </div>
             </div>
           </div>
         )}
