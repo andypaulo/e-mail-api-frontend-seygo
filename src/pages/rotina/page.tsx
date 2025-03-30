@@ -17,7 +17,7 @@ const columns = [
 ];
 export default function RotinaPage() {
   const visualizarModalRef = useRef<ModalHandles>(null);
-  const [rotinaVisualizando, setRotinaVisualizando] = useState<Rotina | null>(null);
+ // const [rotinaVisualizando, setRotinaVisualizando] = useState<Rotina | null>(null);
   const editarModalRef = useRef<ModalHandles>(null);
   const [rotinaEditando, setRotinaEditando] = useState<Rotina | null>(null);
   const [cacheBuster, setCacheBuster] = useState(0);
@@ -54,10 +54,6 @@ export default function RotinaPage() {
       throw error;
     }
   };
-
-export default function RotinaPage() {
-  const visualizarModalRef = useRef<ModalHandles>(null);
-  const editarModalRef = useRef<ModalHandles>(null);
   
 const renderCell = (item: any, column: string | number | symbol) => {
   if (column === "acoes") {
@@ -67,7 +63,7 @@ const renderCell = (item: any, column: string | number | symbol) => {
           <button
             className="bg-green-500 cursor-pointer rounded text-white px-2"
             onClick={() => {
-              setRotinaVisualizando(item);
+             //setRotinaVisualizando(item);
               visualizarModalRef.current?.openModal();
             }}
           >
@@ -176,31 +172,26 @@ const renderCell = (item: any, column: string | number | symbol) => {
           width="428"
           height="534"
           modalTitle={`Detalhes da Rotina`}
-          modalElement={
-              <ViewRotina  
-                rotina={rotinaVisualizando} 
-                onClose={() => visualizarModalRef.current?.closeModal()}
-              />
-          }
-        />
+          modalElement={<div></div>}
+          />
          <ModalBlank
           ref={editarModalRef}
-          width="428"
-          height="554"
+          width="448"
+          height="614"
           modalTitle={`${rotinaEditando?.routine_name || ""}`}
           modalElement={
             <FormRotina
-              rotina={rotinaEditando || undefined}
-              onCancel={() => editarModalRef.current?.closeModal()}
-              onSubmit={async (dados) => {
-                await handleSalvar(dados);
-                editarModalRef.current?.closeModal();
-              }}
-            />
-          }
+            rotina={rotinaEditando || undefined}
+            onCancel={() => editarModalRef.current?.closeModal()}
+            onSubmit={async (dados) => {
+              await handleSalvar(dados);
+              editarModalRef.current?.closeModal();
+            }}
+          />
+        }
         />
       </div>
     </div>
   );
 }
-}
+
