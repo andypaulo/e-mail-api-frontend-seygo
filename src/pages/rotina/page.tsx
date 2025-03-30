@@ -1,4 +1,4 @@
-import { MagnifyingGlass, Plus } from "@phosphor-icons/react";
+import { MagnifyingGlass, Plus, Eye, Pencil, Trash, } from "@phosphor-icons/react";
 import CustomSelect from "../../components/shared/CustomSelect";
 import TableCustom from "../../components/shared/TableCustom";
 import { useRef } from "react";
@@ -14,6 +14,10 @@ const columns = [
   { header: "Ações", body: "acoes" },
 ];
 
+export default function RotinaPage() {
+  const visualizarModalRef = useRef<ModalHandles>(null);
+  const editarModalRef = useRef<ModalHandles>(null);
+  
 const renderCell = (item: any, column: string | number | symbol) => {
   if (column === "acoes") {
     return (
@@ -21,17 +25,30 @@ const renderCell = (item: any, column: string | number | symbol) => {
         <div>
           <button
             className="bg-green-500 cursor-pointer rounded text-white px-2"
-            onClick={() => alert(`${item.id}`)}
+            onClick={() => {
+              visualizarModalRef.current?.openModal();}}
           >
-            Visualizar
+
+            <Eye size={25} />
           </button>
         </div>
+        <div className="">
+          <button
+            className="bg-orange-400 cursor-pointer rounded text-white px-2"
+            onClick={() => {
+              editarModalRef.current?.openModal(); 
+            }}
+          >
+            <Pencil size={25} />
+          </button>
+        </div>
+
         <div>
           <button
             className="bg-red-500 cursor-pointer rounded text-white px-2"
             onClick={() => alert(`Deletando ${item.id}`)}
           >
-            Excluir
+            <Trash size={25} />
           </button>
         </div>
       </div>
@@ -55,9 +72,6 @@ const renderCell = (item: any, column: string | number | symbol) => {
   return item[column];
 };
 
-export default function RotinaPage() {
-  const visualizarModalRef = useRef<ModalHandles>(null);
-  const editarModalRef = useRef<ModalHandles>(null);
 
   return (
     <div className="bg-[#EDF1F5] min-h-screen w-full">
@@ -99,7 +113,7 @@ export default function RotinaPage() {
             <MagnifyingGlass size={20} weight="bold" /> Pesquisar
           </button>
           <button className="bg-[#46B7BA] text-white px-4 py-1.5 rounded-sm flex items-center gap-2 cursor-pointer hover:bg-[#46b6baf3] active:bg-[#1096DE] transition w-full md:w-auto">
-            <Plus size={20} weight="bold" /> Novo Template
+            <Plus size={20} weight="bold" /> Nova Rotina
           </button>
         </div>
       </div>
@@ -114,33 +128,20 @@ export default function RotinaPage() {
       </div>
 
       <div>
-        <button
-          onClick={() => visualizarModalRef.current?.openModal()}
-          className="border-1 rounded-[100%]"
-        >
-          Visualizar
-        </button>
         <ModalBlank
           ref={visualizarModalRef}
           width="428"
           height="534"
           layoutButton={2}
-          modalTitle="Visualizar Rotina"
+          modalTitle="Detalhes da Rotina"
           modalElement={<div></div>}
         />
-
-        <button
-          onClick={() => editarModalRef.current?.openModal()}
-          className="border-1 rounded-[100%] m-5"
-        >
-          Editar
-        </button>
         <ModalBlank
           ref={editarModalRef}
-          width="428"
-          height="554"
+          width="468"
+          height="614"
           layoutButton={2}
-          modalTitle={`Editar Rotina [nome da rotina]`}
+          modalTitle={`routine_name`}
           modalElement={<FormRotina/>}
         />
       </div>
