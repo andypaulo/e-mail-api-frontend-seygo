@@ -1,22 +1,41 @@
 import React, { useState } from 'react';
 
+interface SMTPFormData {
+  connection_name: string;
+  host: string;
+  port: number;
+  secure: boolean;
+  tls_enabled: boolean;
+  reject_unauthorized: boolean;
+  from_address: string;
+  from_name: string;
+  status: boolean;
+}
 
+interface SMTPConnectionFormProps {
+  onSubmit?: (data: SMTPFormData) => void;
+  onCancel: () => void;
+  initialData?: Partial<SMTPFormData>;
+}
 
-
-const SMTPConnectionForm = ({ onSubmit, initialData = {} }) => {
-  const [formData, setFormData] = useState({
+const SMTPConnectionForm: React.FC<SMTPConnectionFormProps> = ({ 
+  onSubmit, 
+  onCancel,
+  initialData = {} 
+}) => {
+  const [formData, setFormData] = useState<SMTPFormData>({
     connection_name: initialData.connection_name || '',
     host: initialData.host || '',
     port: initialData.port || 587,
-    secure: initialData.secure || false,
-    tls_enabled: initialData.tls_enabled || true,
-    reject_unauthorized: initialData.reject_unauthorized || true,
+    secure: initialData.secure ?? false,
+    tls_enabled: initialData.tls_enabled ?? false,
+    reject_unauthorized: initialData.reject_unauthorized ?? false,
     from_address: initialData.from_address || '',
     from_name: initialData.from_name || '',
-    status: initialData.status || true,
+    status: initialData.status ?? false,
   });
 
-  const handleChange = (e) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type, checked } = e.target;
     setFormData(prev => ({
       ...prev,
@@ -24,9 +43,9 @@ const SMTPConnectionForm = ({ onSubmit, initialData = {} }) => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    onSubmit(formData);
+    onSubmit?.(formData);
   };
   
   {console.log(formData)}
@@ -131,6 +150,7 @@ const SMTPConnectionForm = ({ onSubmit, initialData = {} }) => {
             onChange={handleChange}
             className="w-full px-3 py-2 border border-[#D9D9D9] p-1.25 rounded-md focus:outline-none focus:ring-1 focus:ring-[#a8a3a3]"
             required
+            placeholder="email@teste.com"
           />
         </div>
         <div>
@@ -144,6 +164,7 @@ const SMTPConnectionForm = ({ onSubmit, initialData = {} }) => {
             value={formData.from_name}
             onChange={handleChange}
             className="w-full px-3 py-2 border border-[#D9D9D9] p-1.25 rounded-md focus:outline-none focus:ring-1 focus:ring-[#a8a3a3]"
+            placeholder="Fulano da Silva"
           />
         </div>
       </div>
@@ -161,13 +182,17 @@ const SMTPConnectionForm = ({ onSubmit, initialData = {} }) => {
         </label>
       </div>
 
-    <div className='flex justify-end'>
+      <div className='flex justify-end space-x-3'>
       <button
-        type="submit"
-        className="w-50 bg-[#46B7BA] text-white py-2 px-4 rounded-md hover:bg-[#107E81] transition duration-200 focus:outline-none focus:ring-2 focus:ring-[#107E81] focus:ring-offset-2"
-      >
-        Salvar Configuração
-      </button>
+          type="button"
+          onClick={onCancel}
+          className="w-25 h-10c border rounded-md bg-white text-[#ED6F2A] hover:text-[#9E4616]  ">Cancelar
+        </button>
+      <button
+          type="submit"
+          className="w-25 h-10 bg-[#46B7BA] text-white rounded-md hover:bg-[#107E81]">
+          Salvar
+        </button>
       </div>
     </form>
   );
