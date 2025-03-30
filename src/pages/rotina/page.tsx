@@ -1,9 +1,11 @@
 import { MagnifyingGlass, Plus, Eye, Pencil, Trash, } from "@phosphor-icons/react";
+import { useState, useRef } from "react";
 import CustomSelect from "../../components/shared/CustomSelect";
 import TableCustom from "../../components/shared/TableCustom";
-import { useRef } from "react";
 import ModalBlank, { ModalHandles } from "../../components/shared/Modal.tsx";
-import FormRotina from "./components/formRotina.tsx";
+import FormRotina, { Rotina } from "./components/formRotina.tsx";
+
+
 
 const columns = [
   { header: "ID", body: "id" },
@@ -13,6 +15,45 @@ const columns = [
   { header: "Status", body: "status" },
   { header: "Ações", body: "acoes" },
 ];
+export default function RotinaPage() {
+  const visualizarModalRef = useRef<ModalHandles>(null);
+  const [rotinaVisualizando, setRotinaVisualizando] = useState<Rotina | null>(null);
+  const editarModalRef = useRef<ModalHandles>(null);
+  const [rotinaEditando, setRotinaEditando] = useState<Rotina | null>(null);
+  const [cacheBuster, setCacheBuster] = useState(0);
+
+  const handleSalvar = async (dados: Rotina) => {
+    const id = Number(dados.id);
+    if (!id) throw new Error("ID da rotina inválido");
+  
+    try {
+      const payload = { ...dados, id };
+      console.log("Enviando dados:", payload);
+  
+      const response = await fetch(`http://localhost:3000/api/routines/${id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      });
+  
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(
+          errorData.message || `Erro HTTP: ${response.status}`
+        );
+      }
+      setCacheBuster(Date.now());
+      return await response.json();
+    } catch (error) {
+      const errorMessage = error instanceof Error 
+        ? error.message 
+        : "Erro desconhecido ao salvar rotina";
+      
+      console.error("Falha ao salvar:", { error });
+      alert(errorMessage);
+      throw error;
+    }
+  };
 
 export default function RotinaPage() {
   const visualizarModalRef = useRef<ModalHandles>(null);
@@ -26,7 +67,9 @@ const renderCell = (item: any, column: string | number | symbol) => {
           <button
             className="bg-green-500 cursor-pointer rounded text-white px-2"
             onClick={() => {
-              visualizarModalRef.current?.openModal();}}
+              setRotinaVisualizando(item);
+              visualizarModalRef.current?.openModal();
+            }}
           >
 
             <Eye size={25} />
@@ -36,6 +79,7 @@ const renderCell = (item: any, column: string | number | symbol) => {
           <button
             className="bg-orange-400 cursor-pointer rounded text-white px-2"
             onClick={() => {
+              setRotinaEditando(item); 
               editarModalRef.current?.openModal(); 
             }}
           >
@@ -71,7 +115,6 @@ const renderCell = (item: any, column: string | number | symbol) => {
   }
   return item[column];
 };
-
 
   return (
     <div className="bg-[#EDF1F5] min-h-screen w-full">
@@ -122,7 +165,7 @@ const renderCell = (item: any, column: string | number | symbol) => {
         <TableCustom
           renderCell={renderCell}
           columns={columns}
-          fetchEndpoint="http://localhost:3000/api/routines"
+          fetchEndpoint={`http://localhost:3000/api/routines?cache=${cacheBuster}`}
           numberRolls={40}
         />
       </div>
@@ -132,19 +175,32 @@ const renderCell = (item: any, column: string | number | symbol) => {
           ref={visualizarModalRef}
           width="428"
           height="534"
-          layoutButton={2}
-          modalTitle="Detalhes da Rotina"
-          modalElement={<div></div>}
+          modalTitle={`Detalhes da Rotina`}
+          modalElement={
+              <ViewRotina  
+                rotina={rotinaVisualizando} 
+                onClose={() => visualizarModalRef.current?.closeModal()}
+              />
+          }
         />
-        <ModalBlank
+         <ModalBlank
           ref={editarModalRef}
-          width="468"
-          height="614"
-          layoutButton={2}
-          modalTitle={`routine_name`}
-          modalElement={<FormRotina/>}
+          width="428"
+          height="554"
+          modalTitle={`${rotinaEditando?.routine_name || ""}`}
+          modalElement={
+            <FormRotina
+              rotina={rotinaEditando || undefined}
+              onCancel={() => editarModalRef.current?.closeModal()}
+              onSubmit={async (dados) => {
+                await handleSalvar(dados);
+                editarModalRef.current?.closeModal();
+              }}
+            />
+          }
         />
       </div>
     </div>
   );
+}
 }
