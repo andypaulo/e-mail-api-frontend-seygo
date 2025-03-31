@@ -6,7 +6,6 @@ import { X } from "@phosphor-icons/react";
 interface IModal {
   width: string;
   height: string;
-  layoutButton: number;
   modalTitle: string;
   modalElement: ReactElement;
 }
@@ -17,7 +16,7 @@ export interface ModalHandles {
 }
 
 const ModalBlank = forwardRef<ModalHandles, IModal>(
-  ({ width, height, layoutButton, modalTitle, modalElement }, ref) => {
+  ({ width, height, modalTitle, modalElement }, ref) => {
     const [isOpen, setIsOpen] = useState(false);
 
     const openModal = () => setIsOpen(true);
@@ -29,14 +28,6 @@ const ModalBlank = forwardRef<ModalHandles, IModal>(
     }));
 
     const modalStyle = { width: `${width}px`, height: `${height}px` };
-    let cancelButtonClass: string =
-      "w-25 h-10 bg-white rounded-md border-2 cursor-pointer ease-in duration-100";
-    if (layoutButton == 1)
-      cancelButtonClass +=
-        "border-[#ED6F2A] text-[#ED6F2A] hover:text-[#9E4616] hover:border-[#9E4616]";
-    if (layoutButton == 2)
-      cancelButtonClass +=
-        "border-[#46B7BA] text-[#46B7BA] hover:text-[#107E81] hover:border-[#107E81]";
 
     return (
       <>
@@ -61,15 +52,6 @@ const ModalBlank = forwardRef<ModalHandles, IModal>(
               </div>
 
               <div>{modalElement}</div>
-
-              <div className="flex justify-end space-x-3">
-                <button onClick={closeModal} className={cancelButtonClass}>
-                  Cancelar
-                </button>
-                <button className="w-25 h-10 bg-[#46B7BA] text-white rounded-md cursor-pointer hover:bg-[#107E81] hover:text-[#EDF1F5]  ease-in duration-100 ">
-                  Salvar
-                </button>
-              </div>
             </div>
           </div>
         )}
