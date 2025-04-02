@@ -36,7 +36,6 @@ export default function ConnectionPage() {
         ref={modalRef}
         width="480"
         height="640"
-        layoutButton={1}
         modalTitle="Criar conexão"
         modalElement={<SMTPConnectionForm
           onSubmit={handleSubmit}
