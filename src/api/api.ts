@@ -1,9 +1,11 @@
 import axios, { AxiosInstance, AxiosResponse, AxiosError } from "axios";
+import { API_CONFIG } from '../config/auth.ts';
 
 const api: AxiosInstance = axios.create({
-  baseURL: "http://localhost:3000/api",
+  baseURL: API_CONFIG.BASE_URL,
   headers: {
     "Content-Type": "application/json",
+    "Authorization": `Bearer ${API_CONFIG.TOKEN}`
   },
 });
 
