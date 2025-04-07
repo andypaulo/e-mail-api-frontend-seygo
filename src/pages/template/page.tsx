@@ -70,7 +70,6 @@ export default function TemplatePage() {
         ref={modalRef}
         width="428"
         height="534"
-        layoutButton={2}
         modalTitle="Criar Novo Template"
         modalElement={
           <form className="flex flex-col gap-3">
