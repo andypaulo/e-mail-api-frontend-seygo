@@ -5,8 +5,15 @@ const api: AxiosInstance = axios.create({
   baseURL: API_CONFIG.BASE_URL,
   headers: {
     "Content-Type": "application/json",
-    "Authorization": `Bearer ${API_CONFIG.TOKEN}`
   },
+});
+
+api.interceptors.request.use(config => {
+  const token = localStorage.getItem('token');
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
 });
 
 const get = async <T>(url: string): Promise<AxiosResponse<T>> => {
@@ -29,4 +36,4 @@ const handleError = (error: AxiosError): string => {
   return `Erro: ${error.message}`;
 };
 
-export { get };
+export { api, get };

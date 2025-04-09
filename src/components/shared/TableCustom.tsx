@@ -3,7 +3,6 @@ import {
   fetchTableData,
   applyFilters,
   paginateData,
-  TableData,
 } from "../../services/tableService";
 
 interface Column {
@@ -15,33 +14,39 @@ interface TableCustomProps {
   columns: Column[];
   renderCell: (item: any, column: string | number | symbol) => React.ReactNode;
   fetchEndpoint: string;
-  numberRolls: number;
+  initialItemsPerPage: number;
 }
 
 const TableCustom: React.FC<TableCustomProps> = ({
   columns,
   renderCell,
   fetchEndpoint,
-  numberRolls,
+  initialItemsPerPage = 20,
 }) => {
   const [data, setData] = useState<any[]>([]);
   const [currentPage, setCurrentPage] = useState<number>(1);
+  const [itemsPerPage, setItemsPerPage] = useState<number>(initialItemsPerPage);
   const [filters, setFilters] = useState<{ [key: string]: any }>({});
 
   useEffect(() => {
     fetchTableData(fetchEndpoint)
-      .then((result: TableData) => {
+      .then((result: any) => {
         console.log(result)
-        setData(result);
+        setData(result.data);
       })
       .catch((error) => console.error("Erro ao buscar os dados:", error));
   }, [fetchEndpoint]);
+  
+  const handleItemsPerPageChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setItemsPerPage(Number(e.target.value));
+    setCurrentPage(1);
+  };
 
-  const filteredData = applyFilters(data, filters);
+  const filteredData = applyFilters(data || [], filters);
   const { paginatedData, totalPages } = paginateData(
-    filteredData,
+    filteredData || [],
     currentPage,
-    numberRolls,
+    itemsPerPage,
   );
 
   const handlePageChange = (page: number) => {
@@ -53,6 +58,21 @@ const TableCustom: React.FC<TableCustomProps> = ({
 
   return (
     <div className="p-4 bg-[#EDF1F5] w-[100%] rounded-lg">
+      <div className="flex justify-between items-center mb-4">
+        <div className="flex items-center space-x-2">
+          <span className="text-sm text-gray-600">Itens por página:</span>
+          <select
+            value={itemsPerPage}
+            onChange={handleItemsPerPageChange}
+            className="border rounded p-1 text-sm"
+          >
+            <option value={10}>10</option>
+            <option value={20}>20</option>
+            <option value={50}>50</option>
+            <option value={100}>100</option>
+          </select>
+        </div>
+      </div>
       <div className="overflow-x-auto rounded-lg">
         <table className="min-w-full bg-white divide-y divide-gray-100">
           <thead className="bg-slate-200">
