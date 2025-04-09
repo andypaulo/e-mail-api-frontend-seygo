@@ -2,13 +2,13 @@ import { Plus } from "@phosphor-icons/react";
 import { useRef } from "react";
 import ModalBlank, { ModalHandles } from "../../components/shared/Modal";
 import SMTPConnectionForm from "./components/formSMTP.tsx";
-import {SMTPFormData} from "../../types/responseTypes.ts"
+import { SMTPFormData } from "../../types/responseTypes.ts";
 
 export default function ConnectionPage() {
   const modalRef = useRef<ModalHandles>(null);
 
-  const handleSubmit = (formData:SMTPFormData) => {
-    console.log('Dados para salvar:', formData);
+  const handleSubmit = (formData: SMTPFormData) => {
+    console.log("Dados para salvar:", formData);
     modalRef.current?.closeModal();
   };
 
@@ -27,7 +27,7 @@ export default function ConnectionPage() {
           onClick={handleOpenModal}
           className="bg-[#46B7BA] text-[#FFFFFF] px-4 py-1.5 rounded-sm flex items-center gap-0.5 cursor-pointer hover:bg-[#46b6baf3] active:bg-[#1096DE] transition delay-60 duration-40 ease-in-out"
         >
-          <Plus size={20} weight="bold"/>
+          <Plus size={20} weight="bold" />
           Nova conexão
         </button>
       </div>
@@ -37,14 +37,13 @@ export default function ConnectionPage() {
         width="480"
         height="640"
         modalTitle="Criar conexão"
-        modalElement={<SMTPConnectionForm
-          onSubmit={handleSubmit}
-          onCancel={() => modalRef.current?.closeModal()}
-        />
-      }
-        
+        modalElement={
+          <SMTPConnectionForm
+            onSubmit={handleSubmit}
+            onCancel={() => modalRef.current?.closeModal()}
+          />
+        }
       />
     </div>
-
   );
 }
