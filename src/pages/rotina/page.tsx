@@ -17,7 +17,6 @@ const columns = [
 ];
 export default function RotinaPage() {
   const visualizarModalRef = useRef<ModalHandles>(null);
- // const [rotinaVisualizando, setRotinaVisualizando] = useState<Rotina | null>(null);
   const editarModalRef = useRef<ModalHandles>(null);
   const [rotinaEditando, setRotinaEditando] = useState<Rotina | null>(null);
   const [cacheBuster, setCacheBuster] = useState(0);
