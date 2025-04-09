@@ -2,6 +2,7 @@ import { MagnifyingGlass, Plus } from "@phosphor-icons/react";
 import { useRef } from "react";
 import ModalBlank, { ModalHandles } from "../../components/shared/Modal.tsx";
 import TableCustom from "../../components/shared/TableCustom";
+import FormTemplate, {FormTemplateData}  from "./components/FormTemplate.tsx"
 
 const columns = [
   { header: "ID", body: "id" },
@@ -25,7 +26,10 @@ const renderCell = (item: any, column: string | number | symbol) => {
 export default function TemplatePage() {
   const modalRef = useRef<ModalHandles>(null);
 
-
+  const handleSubmit = (formData: FormTemplateData) => {
+    console.log('Dados do template:', formData);
+    modalRef.current?.closeModal();
+  };
 
   return (
     <div className="bg-[#EDF1F5] min-h-screen w-full">
@@ -70,37 +74,11 @@ export default function TemplatePage() {
         ref={modalRef}
         width="428"
         height="534"
-        layoutButton={2}
         modalTitle="Criar Novo Template"
-        modalElement={
-          <form className="flex flex-col gap-3">
-            <div className="flex flex-col gap-1.5 mt-[5px]">
-              <label className="text-[#929292] text-[12px]">
-                Nome Template
-              </label>
-              <input
-                type="text"
-                className="border border-[#D9D9D9] p-2.25 rounded-md text-[11px] text-[#929292] focus:outline-none focus:ring-1 focus:ring-[#a8a3a3] w-[380px] max-w-full"
-              />
-            </div>
-
-            <div className="flex flex-col gap-1.5 mt-[2.5px]">
-              <label className="text-[#929292] text-[12px]">
-                Tipo Template
-              </label>
-              <select className="cursor-pointer border border-[#D9D9D9] p-2.25 rounded-md text-[11px] text-[#929292] focus:outline-none focus:ring-1 focus:ring-[#a8a3a3] w-[380px] max-w-full">
-                <option>Text</option>
-                <option>HTML</option>
-              </select>
-            </div>
-
-            <div className="flex flex-col gap-1.5 mt-[2.5px]">
-              <label className="text-[#929292] text-[12px]">
-                Conteúdo do Template
-              </label>
-              <textarea className="resize-none w-[380px] max-w-full h-[170px] text-[11px] text-[#929292] border border-[#D9D9D9] p-1.25 rounded-md focus:outline-none focus:ring-1 focus:ring-[#a8a3a3]"></textarea>
-            </div>
-          </form>
+        modalElement={<FormTemplate 
+          onSubmit={handleSubmit}
+          onCancel={() => modalRef.current?.closeModal()} 
+          />
         }
       />
     </div>
