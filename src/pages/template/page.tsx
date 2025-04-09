@@ -61,8 +61,8 @@ export default function TemplatePage() {
         <TableCustom
           renderCell={renderCell}
           columns={columns}
-          fetchEndpoint={`"$"{API_CONFIG.BASE_URL}/templates`}
-          numberRolls={40}
+          fetchEndpoint={`${API_CONFIG.BASE_URL}/templates`}
+          initialItemsPerPage={10}
         />
       </div>
 
