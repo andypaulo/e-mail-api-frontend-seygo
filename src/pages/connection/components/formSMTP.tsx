@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
 interface SMTPFormData {
   connection_name: string;
@@ -18,28 +18,28 @@ interface SMTPConnectionFormProps {
   initialData?: Partial<SMTPFormData>;
 }
 
-const SMTPConnectionForm: React.FC<SMTPConnectionFormProps> = ({ 
-  onSubmit, 
+const SMTPConnectionForm: React.FC<SMTPConnectionFormProps> = ({
+  onSubmit,
   onCancel,
-  initialData = {} 
+  initialData = {},
 }) => {
   const [formData, setFormData] = useState<SMTPFormData>({
-    connection_name: initialData.connection_name || '',
-    host: initialData.host || '',
+    connection_name: initialData.connection_name || "",
+    host: initialData.host || "",
     port: initialData.port || 587,
     secure: initialData.secure ?? false,
     tls_enabled: initialData.tls_enabled ?? false,
     reject_unauthorized: initialData.reject_unauthorized ?? false,
-    from_address: initialData.from_address || '',
-    from_name: initialData.from_name || '',
+    from_address: initialData.from_address || "",
+    from_name: initialData.from_name || "",
     status: initialData.status ?? false,
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type, checked } = e.target;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [name]: type === 'checkbox' ? checked : value
+      [name]: type === "checkbox" ? checked : value,
     }));
   };
 
@@ -47,11 +47,12 @@ const SMTPConnectionForm: React.FC<SMTPConnectionFormProps> = ({
     e.preventDefault();
     onSubmit?.(formData);
   };
-  
-  {console.log(formData)}
+
+  {
+    console.log(formData);
+  }
   return (
-    <form onSubmit={handleSubmit} >
-            
+    <form onSubmit={handleSubmit}>
       <div className="mb-4">
         <label className="block text-gray-700 mb-2" htmlFor="connection_name">
           Nome da Conexão*
@@ -102,7 +103,7 @@ const SMTPConnectionForm: React.FC<SMTPConnectionFormProps> = ({
       <div className="mb-4">
         <label className="block text-gray-700 mb-2">
           Configurações de Segurança
-          </label>
+        </label>
         <div className="space-y-2">
           <label className="flex items-center">
             <input
@@ -182,15 +183,18 @@ const SMTPConnectionForm: React.FC<SMTPConnectionFormProps> = ({
         </label>
       </div>
 
-      <div className='flex justify-end space-x-3'>
-      <button
+      <div className="flex justify-end space-x-3">
+        <button
           type="button"
           onClick={onCancel}
-          className="w-25 h-10c border rounded-md bg-white text-[#ED6F2A] hover:text-[#9E4616]  ">Cancelar
+          className="w-25 h-10c border rounded-md bg-white text-[#ED6F2A] hover:text-[#9E4616]  "
+        >
+          Cancelar
         </button>
-      <button
+        <button
           type="submit"
-          className="w-25 h-10 bg-[#46B7BA] text-white rounded-md hover:bg-[#107E81]">
+          className="w-25 h-10 bg-[#46B7BA] text-white rounded-md hover:bg-[#107E81]"
+        >
           Salvar
         </button>
       </div>
