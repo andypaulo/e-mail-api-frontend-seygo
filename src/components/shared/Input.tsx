@@ -20,11 +20,11 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
     ref
   ) => {
     const baseClasses = [
-      'w-full border border-[#D9D9D9] p-1.5 rounded-md',
+      'w-full text-[14px] border border-[#D9D9D9] p-2 rounded-md',
       'focus:outline-none focus:ring-1 focus:ring-[#a8a3a3]',
       'transition-all duration-200',
       error ? 'border-red-500 focus:ring-red-200' : '',
-      props.disabled ? 'bg-gray-100 cursor-not-allowed' : 'bg-white',
+      props.disabled ? 'bg-gray-100 cursor-not-allowed': '',
       className
     ].join(' ');
 

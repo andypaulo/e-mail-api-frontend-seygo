@@ -1,53 +1,48 @@
 import { api } from '../api/api.ts';
 
-export interface TableData {
-  data: any[];
+export interface TableData<T> {
+  data: T[];
   total: number;
   page: number;
   limit: number;
+  totalPages?: number;
 }
 
-export const fetchTableData = async (
+export const fetchTableData = async <T> (
 endpoint: string,
 page: number = 1,
-limit: number = 20
-): Promise<{data: any[]; total: number}> => {
+limit: number = 10,
+filters?: { [key: string]: any}
+): Promise<TableData<T>> => {
   try {
-    const response = await api.get<TableData>(`${endpoint}?page=${page}&limit=${limit}`);
+    console.log('Fetching table data with:', { page, limit, filters });
+    const response = await api.get<TableData<T>>(endpoint, {
+      params: {
+        page,
+        limit,
+        ...filters
+      }
+    });
+    console.log('Received data:', {
+      dataLength: response.data.data.length,
+      total: response.data.total,
+      page,
+      limit
+    });
+
+    const totalPages = Math.ceil(response.data.total / limit);
     return {
-      data: response.data.data,
-      total: response.data.total
+      ...response.data,
+      totalPages
     }
   } catch (error: any) {
-    console.error("Erro ao buscar dados da tabela:", error);
+    console.error("Erro na requisição:", {
+      endpoint,
+      page,
+      limit,
+      error: error.message,
+    });
     throw error;
   }
 };
 
-export const applyFilters = (data: any[], filters: { [key: string]: any }) => {
-  try {
-    return data.filter((item) =>
-      Object.keys(filters).every((key) => {
-        if (!filters[key]) return true;
-        return String(item[key])
-          .toLowerCase()
-          .includes(String(filters[key]).toLowerCase());
-      }),
-    );
-  } catch (err: any) {
-    console.log(err);
-  }
-};
-
-export const paginateData = (
-  data: any[],
-  currentPage: number,
-  recordsPerPage: number,
-) => {
-  const totalPages = Math.ceil(data.length / recordsPerPage);
-  const paginatedData = data.slice(
-    (currentPage - 1) * recordsPerPage,
-    currentPage * recordsPerPage,
-  );
-  return { paginatedData, totalPages };
-};

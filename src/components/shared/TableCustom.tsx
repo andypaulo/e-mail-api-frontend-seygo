@@ -1,9 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-  fetchTableData,
-  applyFilters,
-  paginateData,
-} from "../../services/tableService";
+import {fetchTableData} from "../../services/tableService";
 
 interface Column {
   header: string;
@@ -15,46 +11,47 @@ interface TableCustomProps {
   renderCell: (item: any, column: string | number | symbol) => React.ReactNode;
   fetchEndpoint: string;
   initialItemsPerPage: number;
+  filters?: { [key: string]: any };
 }
 
 const TableCustom: React.FC<TableCustomProps> = ({
   columns,
   renderCell,
   fetchEndpoint,
-  initialItemsPerPage = 20,
+  initialItemsPerPage,
+  filters = {}
 }) => {
   const [data, setData] = useState<any[]>([]);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [itemsPerPage, setItemsPerPage] = useState<number>(initialItemsPerPage);
-  const [filters, setFilters] = useState<{ [key: string]: any }>({});
-
-  useEffect(() => {
-    fetchTableData(fetchEndpoint)
-      .then((result: any) => {
-        console.log(result)
+  const [totalItems, setTotalItems] =  useState<number>(0);
+  const totalPages = Math.ceil(totalItems / itemsPerPage);
+    const fetchData = async () => {
+      try {
+        console.log("Enviando filtros:", filters);
+        console.log(`Fetching page ${currentPage} with ${itemsPerPage} items`);
+        const result = await fetchTableData(fetchEndpoint, currentPage, itemsPerPage, filters);
+        console.log(`Received ${result.data.length} items for page ${currentPage}`);
+        console.log(`Total items: ${result.total}`);
         setData(result.data);
-      })
-      .catch((error) => console.error("Erro ao buscar os dados:", error));
-  }, [fetchEndpoint]);
+        setTotalItems(result.total);
+      } catch (error) {
+        console.error("Erro ao buscar os dados:", error);
+      } 
+    };
+    useEffect(() => {
+    fetchData();
+  }, [fetchEndpoint, currentPage, itemsPerPage, JSON.stringify(filters)]);
   
   const handleItemsPerPageChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setItemsPerPage(Number(e.target.value));
-    setCurrentPage(1);
+    const newLimit = Number(e.target.value);
+    setItemsPerPage(newLimit);
+    setCurrentPage(1); 
   };
-
-  const filteredData = applyFilters(data || [], filters);
-  const { paginatedData, totalPages } = paginateData(
-    filteredData || [],
-    currentPage,
-    itemsPerPage,
-  );
-
-  const handlePageChange = (page: number) => {
-    if (page < 1 || page > totalPages) return;
-    setCurrentPage(page);
+  const handlePageChange = (newPage: number) => {
+    if (newPage < 1 || newPage > totalPages) return;
+    setCurrentPage(newPage);
   };
-
-  console.log(paginatedData)
 
   return (
     <div className="p-4 bg-[#EDF1F5] w-[100%] rounded-lg">
@@ -66,10 +63,11 @@ const TableCustom: React.FC<TableCustomProps> = ({
             onChange={handleItemsPerPageChange}
             className="border rounded p-1 text-sm"
           >
-            <option value={10}>10</option>
-            <option value={20}>20</option>
-            <option value={50}>50</option>
-            <option value={100}>100</option>
+            {[10, 20, 50, 100].map((option) => (
+              <option key={option} value={option}>
+                {option}
+              </option>
+            ))}
           </select>
         </div>
       </div>
@@ -88,7 +86,7 @@ const TableCustom: React.FC<TableCustomProps> = ({
             </tr>
           </thead>
           <tbody className="bg-slate-50 divide-y divide-gray-100">
-            {paginatedData.map((item: any, rowIndex: number) => (
+            {data.map((item: any, rowIndex: number) => (
               <tr key={rowIndex} className="hover:bg-slate-100">
                 {columns.map((col, colIndex) => (
                   <td
@@ -100,7 +98,7 @@ const TableCustom: React.FC<TableCustomProps> = ({
                 ))}
               </tr>
             ))}
-            {paginatedData.length === 0 && (
+            {data.length === 0 && (
               <tr>
                 <td
                   colSpan={columns.length + 1}
