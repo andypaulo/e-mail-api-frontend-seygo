@@ -1,7 +1,12 @@
 import { MagnifyingGlass, Plus } from "@phosphor-icons/react";
-import { useRef } from "react";
+import { useState, useRef } from "react";
+import Input from "../../components/shared/Input.tsx"
+import Button from "../../components/shared/Button.tsx"
 import ModalBlank, { ModalHandles } from "../../components/shared/Modal.tsx";
 import TableCustom from "../../components/shared/TableCustom";
+import FormTemplate from "./components/formTemplate.tsx";
+import { api } from "../../api/api.ts";
+import { Template } from './types.tsx'
 
 const columns = [
   { header: "ID", body: "id" },
@@ -23,9 +28,34 @@ const renderCell = (item: any, column: string | number | symbol) => {
 };
 
 export default function TemplatePage() {
-  const modalRef = useRef<ModalHandles>(null);
+  const novoTemplateModalRef = useRef<ModalHandles>(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [refreshKey, setRefreshKey] = useState(0);
+  const [filters, setFilters] = useState<{ [key: string]: any }>({});
 
-
+  const handleFilterChange = () => {
+    setRefreshKey(prev => prev + 1);
+  };
+ 
+  const handleSalvar = async (dados: Omit<Template, 'id'>) => {
+    try {
+      setIsLoading(true);
+      await api.post('/templates', {
+        ...dados,
+        created_by: "0b3f480a-8191-402f-bcbd-371190fc7097"
+      });
+      
+      novoTemplateModalRef.current?.closeModal();
+      setRefreshKey(prev => prev + 1); 
+      
+    } catch (error) {
+      console.error("Erro ao criar template:", error);
+      alert("Erro ao criar template. Por favor, tente novamente.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  
 
   return (
     <div className="bg-[#EDF1F5] min-h-screen w-full">
@@ -33,76 +63,70 @@ export default function TemplatePage() {
 
       <div className="flex flex-wrap md:flex-nowrap items-end gap-4 border border-[#D1D5DB] p-6 w-full">
         <div className="flex flex-col">
-          <label className="text-[#929292] text-sm">Nome Template</label>
-          <input
-            type="text"
-            className="border border-[#D9D9D9] p-1.25 rounded-md focus:outline-none focus:ring-1 focus:ring-[#a8a3a3]"
-          ></input>
+        <Input 
+          label="Nome Template" 
+          value={filters.template_name || ''}
+          onChange={(e) => setFilters({...filters, template_name: e.target.value})}
+          >
+          </Input>
         </div>
 
         <div className="flex flex-col">
           <label className="text-[#929292] text-sm">Tipo Template</label>
-          <input className="border border-[#D9D9D9] p-1.25 rounded-md focus:outline-none focus:ring-1 focus:ring-[#a8a3a3]"></input>
+          <select 
+          value={filters.type || ''}
+          onChange={(e) => setFilters({...filters, type: e.target.value || undefined})}
+            className="border border-[#D9D9D9] p-2 text-[13px] text-[#929292]  rounded-md focus:outline-none focus:ring-1 focus:ring-[#a8a3a3]"
+            >
+              <option value="">Exibir Todos</option>
+              <option value="HTML">HTML</option>
+              <option value="Text">Text</option>
+          </select>
         </div>
+        <Button  
+          variant="orange-solid"
+          type="submit"
+          onClick={handleFilterChange}
+        >
+          <MagnifyingGlass size={20} weight="bold" /> 
+          Pesquisar
+        </Button>
 
-        <button className="bg-[#ED6F2A] text-[#FFFFFF] px-4 py-1.5 rounded-sm flex items-center gap-2 cursor-pointer hover:bg-[#ed6e2aee] active:bg-[#BA6F47] transition delay-60 duration-40 ease-in-out">
-          <MagnifyingGlass size={20} weight="bold" /> Pesquisar
-        </button>
-        <button
-          onClick={() => modalRef.current?.openModal()}
-          className="bg-[#46B7BA] text-[#FFFFFF] px-4 py-1.5 rounded-sm flex items-center gap-0.5 cursor-pointer hover:bg-[#46b6baf3] active:bg-[#1096DE] transition delay-60 duration-40 ease-in-out"
+        <Button
+          onClick={() => novoTemplateModalRef.current?.openModal()}
+          variant= "teal-alternative-solid"
+          type= "submit"
+          disabled={isLoading}
         >
           <Plus size={20} weight="bold" />
-          Novo Template
-        </button>
+          {isLoading ? 'Salvando...' : 'Novo Template'}
+        </Button>
       </div>
 
       <div className="flex">
         <TableCustom
+          key={refreshKey}
           renderCell={renderCell}
           columns={columns}
-          fetchEndpoint="http://localhost:3000/api/templates"
-          numberRolls={40}
+          fetchEndpoint={`/templates`}
+          initialItemsPerPage={10}
+          filters={filters}
         />
       </div>
 
       <ModalBlank
-        ref={modalRef}
+        ref={novoTemplateModalRef}
         width="428"
         height="534"
-        layoutButton={2}
         modalTitle="Criar Novo Template"
         modalElement={
-          <form className="flex flex-col gap-3">
-            <div className="flex flex-col gap-1.5 mt-[5px]">
-              <label className="text-[#929292] text-[12px]">
-                Nome Template
-              </label>
-              <input
-                type="text"
-                className="border border-[#D9D9D9] p-2.25 rounded-md text-[11px] text-[#929292] focus:outline-none focus:ring-1 focus:ring-[#a8a3a3] w-[380px] max-w-full"
-              />
-            </div>
-
-            <div className="flex flex-col gap-1.5 mt-[2.5px]">
-              <label className="text-[#929292] text-[12px]">
-                Tipo Template
-              </label>
-              <select className="cursor-pointer border border-[#D9D9D9] p-2.25 rounded-md text-[11px] text-[#929292] focus:outline-none focus:ring-1 focus:ring-[#a8a3a3] w-[380px] max-w-full">
-                <option>Text</option>
-                <option>HTML</option>
-              </select>
-            </div>
-
-            <div className="flex flex-col gap-1.5 mt-[2.5px]">
-              <label className="text-[#929292] text-[12px]">
-                Conteúdo do Template
-              </label>
-              <textarea className="resize-none w-[380px] max-w-full h-[170px] text-[11px] text-[#929292] border border-[#D9D9D9] p-1.25 rounded-md focus:outline-none focus:ring-1 focus:ring-[#a8a3a3]"></textarea>
-            </div>
-          </form>
-        }
-      />
-    </div>
+          <FormTemplate
+          onCancel={() => novoTemplateModalRef.current?.closeModal()}
+          onSubmit={handleSalvar}
+          isLoading={isLoading}
+        />
+      }
+    />
+  </div>    
   );
 }
