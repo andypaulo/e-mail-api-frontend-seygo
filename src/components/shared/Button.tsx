@@ -6,7 +6,7 @@ const Button = ({
   className = '', 
   ...props 
 }: {
-  variant: 'orange' | 'teal' | 'teal-solid' | 'orange-solid' | 'teal-alternative-solid';
+  variant: 'orange' | 'teal' | 'teal-solid' | 'orange-solid' | 'teal-alternative-solid' | 'green-solid';
 } & React.ButtonHTMLAttributes<HTMLButtonElement>) => {
   const baseClasses = `
     ${className}
@@ -28,6 +28,9 @@ const Button = ({
     case 'teal-alternative-solid':
       variantClasses = 'bg-[#46B7BA] text-[#FFFFFF] px-4 py-1.5 rounded-sm flex items-center gap-0.5 cursor-pointer hover:bg-[#46b6baf3] active:bg-[#1096DE] transition delay-60 duration-40 ease-in-out';
       break;
+    case 'green-solid':
+      variantClasses = 'bg-[#2A7A40] text-[#FFFFFF] px-4 py-1.5 rounded-sm items-center gap-0.5 cursor-pointer hover:bg-[#2A7A5C] active:bg-[#2F7A2A] transition delay-60 duration-40 ease-in-out'
+      break
   }
 
   return (
