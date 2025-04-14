@@ -64,7 +64,7 @@ export default function Sidebar() {
             </Link>
             <Link
               className="flex items-center gap-2 rounded p-1 hover:text-[#EDF1F5] hover:bg-[#A5ADB8] z-1"
-              to="/rotina"
+              to="/email"
             >
               <Envelope size={27} />
               {isOpen && <span>Emails</span>}
