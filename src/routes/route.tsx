@@ -5,6 +5,7 @@ import TemplatePage from "../pages/template/page";
 import LoginPage from "../pages/login/page";
 import ConnectionPage from "../pages/connection/page";
 import Layout from "../components/layout/layout";
+import EmailPage from "../pages/email/page";
 
 
 
@@ -17,7 +18,7 @@ const AppRoutes = () => {
         <Route path="/rotina" element={<RotinaPage />} />
         <Route path="/template" element={<TemplatePage />} />
         <Route path="/connection" element={<ConnectionPage />} />
-        <Route path="/"/>
+        <Route path="/email" element={<EmailPage/>}/>
       </Route>
     </Routes>
   );
